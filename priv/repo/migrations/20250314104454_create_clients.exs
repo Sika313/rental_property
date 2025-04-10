@@ -10,9 +10,9 @@ defmodule RentalProperty.Repo.Migrations.CreateClients do
       add :password, :string
       add :token, :string
       add :tenant, :boolean
-      add :due_date, :utc_datetime
+      add :due_date, :date
 
-      add :tier, references(:tiers, column: :id, on_delete: :nothing)
+      add :tier_id, references(:tiers, column: :id, on_delete: :nothing)
       timestamps(type: :utc_datetime)
     end
   end

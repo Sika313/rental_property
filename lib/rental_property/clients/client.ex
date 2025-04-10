@@ -13,7 +13,7 @@ defmodule RentalProperty.CLIENTS.Client do
     field :phone, :string
     field :token, :string
     field :tenant, :boolean
-    field :due_date, :utc_datetime
+    field :due_date, :date 
 
     timestamps(type: :utc_datetime)
   end

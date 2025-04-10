@@ -6,7 +6,7 @@ defmodule RentalPropertyWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {RentalPropertyWeb.Layouts, :root}
-   # plug :protect_from_forgery
+    plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
@@ -22,6 +22,12 @@ defmodule RentalPropertyWeb.Router do
     post "/about", PageController, :handle_about
     
     live "/signup", SignupLive
+    live "/login", LoginLive
+  end
+
+  scope "/client", RentalPropertyWeb do
+    live "/landing_page", ClientLive
+
   end
 
   # Other scopes may use custom stacks.

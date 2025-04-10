@@ -9,6 +9,16 @@ defmodule RentalProperty.CLIENTS do
   alias RentalProperty.CLIENTS.Client
 
   @doc """
+    USER DEFINED FUNCTIONS
+  """
+  def find_by_phone_and_password(params) do
+    case Repo.get_by(Client, [phone: params["phone"], password: params["password"]]) do
+      nil -> {:error}
+      result -> {:ok, result}
+    end
+  end
+
+  @doc """
   Returns the list of clients.
 
   ## Examples
