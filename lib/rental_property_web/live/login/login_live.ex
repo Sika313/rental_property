@@ -4,6 +4,7 @@ defmodule RentalPropertyWeb.LoginLive do
   alias RentalProperty.CLIENTS
 
   def mount(_params, session, socket) do
+    IO.inspect(socket, label: "SOCKET--->")
     {:ok, socket}
   end
 
@@ -11,6 +12,7 @@ defmodule RentalPropertyWeb.LoginLive do
     IO.inspect(params, label: "PARAMS--->")
     result = case CLIENTS.find_by_phone_and_password(params) do
       {:ok, result} ->
+        r = Map.from_struct(result)
         socket = socket
         |> put_flash(:info, "Logged in successfully.")
         |> redirect(to: "/client/landing_page")

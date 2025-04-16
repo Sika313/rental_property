@@ -1,1 +1,60 @@
-<h1>Client landing page.</h1>
+
+<div class="flex flex-row">
+
+  <!-- NAVIGATION SECTION -->
+<div class="fex flex-col w-[30vw] pl-2 pt-4 bg-orange-500 h-screen">
+<img src={
+if @gender == "m" do 
+"/images/male_logo.png"
+else
+"/images/female_logo.jpeg"
+end}
+alt="image" class="w-60 h-60 rounded-full mb-4" />
+
+<h1 class="text-xl mb-4"><%= @fname %> <%= @lname %></h1>
+
+<a href="#" class="bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2">Notifications</a> 
+<br />
+<br />
+<a href="#" class="bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">Messages</a> 
+<br />
+<br />
+<a href="#" class="bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">Tiers</a> 
+
+<!-- USER MANAGEMENT -->
+<div class="mt-4">
+<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown button <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+</svg>
+</button>
+
+<!-- Dropdown menu -->
+<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+      </li>
+    </ul>
+</div>
+</div>
+
+<!-- END -->
+
+</div>
+  <!-- END -->
+
+  <!-- TEST -->
+    <div class="bg-pink-500 w-[50vw] h-screen">
+    </div>
+  <!-- END -->
+
+</div>
