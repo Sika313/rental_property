@@ -24,6 +24,7 @@ defmodule RentalPropertyWeb.Router do
     live "/signup", SignupLive
     get "/login", PageController, :login 
     post "/login", PageController, :handle_login 
+    get "/logout", PageController, :logout
   end
 
   scope "/client", RentalPropertyWeb do

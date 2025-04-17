@@ -7,7 +7,7 @@ defmodule RentalPropertyWeb.PageController do
   def home(conn, _params) do
     # The home page is often custom made,
     # so skip the default app layout.
-    render(conn, :home, layout: false)
+    render(conn, :home)
   end
 
   def about(conn, _params) do
@@ -36,6 +36,14 @@ defmodule RentalPropertyWeb.PageController do
         |> put_flash(:error, "Credentials incorrect.")
         |> redirect(to: "/login")
     end
+  end
+
+  def logout(conn, _params) do
+    conn = conn
+    |> clear_session()
+    |> put_flash(:info, "Successfully logged out.")
+    |> redirect(to: "/")
+    conn
   end
 
 end
