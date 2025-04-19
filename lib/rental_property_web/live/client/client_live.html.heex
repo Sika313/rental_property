@@ -2,7 +2,7 @@
 <div class="flex flex-row">
 
   <!-- NAVIGATION SECTION -->
-<div class="fex flex-col w-[30vw] pl-2 pt-4 bg-orange-500">
+<div class="fex flex-col w-[20vw] text-sm pl-2 pt-4 bg-orange-500">
 <img src={
 if @gender == "m" do 
 "/images/male_logo.png"
@@ -13,14 +13,14 @@ alt="image" class="w-20 h-20 rounded-full mb-4" />
 
 <h1 class="text-xl mb-4"><%= @fname %> <%= @lname %></h1>
 
-<div class="flex flex-col w-[45%] text-center">
+<div class="flex flex-col w-[90%] text-center">
 
-<a href="#" class="flex flex-row items-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mb-4">
+<button phx-click={show_modal("view_profile")} class="flex flex-row items-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
 </svg>
 Profile
-</a> 
+</button> 
 
 <a href="#" class="flex flex-row items-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2">
@@ -43,31 +43,6 @@ Upgrade tier
 </div>
 
 
-<!-- USER MANAGEMENT -->
-<div class="mt-4">
-<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown button <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-</svg>
-</button>
-
-<!-- Dropdown menu -->
-<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-      <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-      </li>
-      <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-      </li>
-      <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-      </li>
-      <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-      </li>
-    </ul>
-</div>
-</div>
 
 <!-- END -->
 
@@ -81,9 +56,72 @@ Upgrade tier
 </div>
   <!-- END -->
 
-  <!-- TEST -->
-    <div class="bg-pink-500 w-[50vw] h-screen">
-    </div>
+<!-- CATEGORIES -->
+<div class="flex flex-col h-screen">
+
+<!-- USER MANAGEMENT -->
+<div class="mt-4">
+<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Category <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+</svg>
+</button>
+
+<!-- Dropdown menu -->
+<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+      <%= for property <- @properties do %>
+      <li>
+        <form phx-submit="submit_category">
+        <input type="text" name="category" value={property.property_type} class="hidden" />
+        <button type="submit"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%= property.property_type %></button>
+        </form>
+      </li>
+      <% end %>
+    </ul>
+</div>
+</div>
+
+<!-- SEARCH AREA -->
+<div class="flex flex-row mt-4">
+
+  <!-- PROVINCE -->
+<%= if @search_area do %>
+<label for="province">Province</label>
+<select id="province" name="province" class="mr-10">
+ <%= for province <- @provinces do %>
+  <option value={province.id} phx-click="province"> <%= province.name %> </option>
+ <% end %>
+</select>
+<% end %>
+
+  <!-- DISTRICT -->
+<%= if @district_area do %>
+<label for="district">District</label>
+<select id="district" name="district">
+ <%= for district <- @districts do %>
+  <option value={district.name} phx-click="district"> <%= district.name %> </option>
+ <% end %>
+</select>
+<% end %>
+
+</div>
+
+</div>
   <!-- END -->
 
 </div>
+
+
+  <!-- EDIT PROFILE -->
+<.modal id="view_profile">
+  <div class="flex flex-col">
+    <span class="mb-4">Firstname: <%= @fname %> </span>
+    <span class="mb-4">Lastname: <%= @lname %> </span>
+    <span class="mb-4">Gender: <%= @gender %> </span>
+    <span class="mb-4">Phone number: <%= @phone %> </span>
+    <span class="mb-4">Is tenant?: <%= @tenant %> </span>
+    <span><a href="client/edit_profile" class="bg-blue-800 hover:bg-blue-700 transition-colors text-white px-4 py-2 rounded-md">Edit</a></span>
+  </div>
+</.modal>
+
+  <!-- END -->

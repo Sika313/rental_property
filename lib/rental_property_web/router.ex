@@ -29,6 +29,8 @@ defmodule RentalPropertyWeb.Router do
 
   scope "/client", RentalPropertyWeb do
     live "/landing_page", ClientLive
+    live "/view_profile", ClientLive
+    live "/edit_profile", EditProfileLive
 
   end
 
