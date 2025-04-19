@@ -44,13 +44,14 @@ defmodule RentalPropertyWeb.ClientLive do
   end
 
   def handle_event("submit_category", params, socket) do
-    IO.inspect(params, label: "PARAMS--->")
+    IO.inspect("CATEGORY")
     socket = socket
     |> assign(:search_area, true)
     {:noreply, socket}
   end
 
   def handle_event("province", params, socket) do
+    IO.inspect("PROVINCE")
     id = params["value"] |> String.to_integer()
     case DISTRICT.get_by_province_id(id) do
       {:no_results_found} ->
