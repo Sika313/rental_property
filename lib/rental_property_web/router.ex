@@ -27,11 +27,13 @@ defmodule RentalPropertyWeb.Router do
     get "/logout", PageController, :logout
   end
 
+  live_session :client do
   scope "/client", RentalPropertyWeb do
+    pipe_through :browser
     live "/landing_page", ClientLive
     live "/view_profile", ClientLive
     live "/edit_profile", EditProfileLive
-
+    end
   end
 
   # Other scopes may use custom stacks.
