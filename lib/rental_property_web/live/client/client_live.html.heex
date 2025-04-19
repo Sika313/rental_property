@@ -89,7 +89,7 @@ Upgrade tier
 <label for="province">Province</label>
 <select id="province" name="province" class="mr-10">
  <%= for province <- @provinces do %>
-  <option value={province.id} phx-click="province"> <%= province.name %> </option>
+  <option phx-value-province_id={province.id} phx-click="province"> <%= province.name %> </option>
  <% end %>
 </select>
 <% end %>

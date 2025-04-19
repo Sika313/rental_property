@@ -52,7 +52,7 @@ defmodule RentalPropertyWeb.ClientLive do
 
   def handle_event("province", params, socket) do
     IO.inspect("PROVINCE")
-    id = params["value"] |> String.to_integer()
+    id = params["province_id"] |> String.to_integer()
     case DISTRICT.get_by_province_id(id) do
       {:no_results_found} ->
         socket = socket
@@ -62,7 +62,6 @@ defmodule RentalPropertyWeb.ClientLive do
         results_map = for result <- results do
           Map.from_struct(result)
         end
-        IO.inspect(results_map, label: "DISTRICTS--->")
         socket = socket
         |> assign(:districts, results_map)
         |> assign(:district_area, true)
