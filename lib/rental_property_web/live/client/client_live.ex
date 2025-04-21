@@ -64,7 +64,7 @@ defmodule RentalPropertyWeb.ClientLive do
         results_map = for result <- results do
           Map.from_struct(result)
         end
-        IO.inspect(result_map, label: "RESULT MAP--->")
+        IO.inspect(results_map, label: "RESULT MAP--->")
         socket = socket
         |> assign(:districts, results_map)
         |> assign(:district_area, true)
