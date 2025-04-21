@@ -25,6 +25,7 @@ defmodule RentalPropertyWeb.ClientLive do
       |> assign(:phone, result.phone)
       |> assign(:tenant, result.tenant)
       |> assign(:properties, properties_map)
+      |> assign(:property, "House")
       |> assign(:provinces, provinces_map)
       |> assign(:search_area, false)
       |> assign(:districts, [])
@@ -43,15 +44,15 @@ defmodule RentalPropertyWeb.ClientLive do
     user
   end
 
-  def handle_event("submit_category", params, socket) do
-    IO.inspect("CATEGORY")
+  def handle_event("category", params, socket) do
     socket = socket
+    |> assign(:property, params["property"])
     |> assign(:search_area, true)
+    IO.inspect(socket.assigns.property, label: "PROPERTY--->")
     {:noreply, socket}
   end
 
   def handle_event("province", params, socket) do
-    IO.inspect("PROVINCE")
     id = params["province_id"] |> String.to_integer()
     case DISTRICT.get_by_province_id(id) do
       {:no_results_found} ->

@@ -42,8 +42,6 @@ Upgrade tier
 </a> 
 </div>
 
-
-
 <!-- END -->
 
 <a href="/logout" class="flex flex-row items-center mt-4">
@@ -56,57 +54,42 @@ Upgrade tier
 </div>
   <!-- END -->
 
+
+<div class="flex flex-row h-screen py-4 px-4">
+
 <!-- CATEGORIES -->
-<div class="flex flex-col h-screen">
+<span>
+<label for="category">Category</label>
+<select id="property" name="property" class="mr-10">
+ <%= for property <- @properties do %>
+  <option phx-value-property={property.property_type} phx-click="category"> <%= property.property_type %> </option>
+ <% end %>
+</select>
+</span>
 
-<!-- USER MANAGEMENT -->
-<div class="mt-4">
-<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Category <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-</svg>
-</button>
-
-<!-- Dropdown menu -->
-<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-      <%= for property <- @properties do %>
-      <li>
-        <form phx-submit="submit_category">
-        <input type="text" name="category" value={property.property_type} class="hidden" />
-        <button type="submit"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%= property.property_type %></button>
-        </form>
-      </li>
-      <% end %>
-    </ul>
-</div>
-</div>
-
-<!-- SEARCH AREA -->
-<div class="flex flex-row mt-4">
 
   <!-- PROVINCE -->
-<%= if @search_area do %>
+<span>
 <label for="province">Province</label>
 <select id="province" name="province" class="mr-10">
  <%= for province <- @provinces do %>
   <option phx-value-province_id={province.id} phx-click="province"> <%= province.name %> </option>
  <% end %>
 </select>
-<% end %>
+</span>
 
   <!-- DISTRICT -->
-<%= if @district_area do %>
+<span>
 <label for="district">District</label>
 <select id="district" name="district">
  <%= for district <- @districts do %>
   <option value={district.name} phx-click="district"> <%= district.name %> </option>
  <% end %>
 </select>
-<% end %>
-
+</span>
 </div>
 
-</div>
+
   <!-- END -->
 
 </div>
