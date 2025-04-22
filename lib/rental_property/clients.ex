@@ -19,8 +19,6 @@ defmodule RentalProperty.CLIENTS do
   end
 
   def find_by_token(token) do
-    IO.inspect("HIT--->")
-    IO.inspect(token, label: "TOKEN--->")
     case Repo.get_by(Client, token: token) do
       nil -> {:error}
       result -> result

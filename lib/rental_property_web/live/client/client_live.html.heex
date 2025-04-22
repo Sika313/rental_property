@@ -62,7 +62,11 @@ Upgrade tier
 <label for="category">Category</label>
 <select id="property" name="property" class="mr-10">
  <%= for property <- @properties do %>
+  <%= if property.property_type == @property do %>
+  <option phx-value-property={property.property_type} phx-click="category" selected> <%= property.property_type %> </option>
+  <% else %>
   <option phx-value-property={property.property_type} phx-click="category"> <%= property.property_type %> </option>
+  <% end %>
  <% end %>
 </select>
 </span>
@@ -83,7 +87,7 @@ Upgrade tier
 <label for="district">District</label>
 <select id="district" name="district">
  <%= for district <- @districts do %>
-  <option value={district.name} phx-click="district"> <%= district.name %> </option>
+  <option value={district.name} phx-click="district" selected> <%= district.name %> </option>
  <% end %>
 </select>
 </span>

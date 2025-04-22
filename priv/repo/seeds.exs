@@ -14,6 +14,25 @@ alias RentalProperty.TIERS
 alias RentalProperty.TYPES
 alias RentalProperty.DISTRICT
 alias RentalProperty.PROVINCES
+alias RentalProperty.ROLES
+alias RentalProperty.USERS
+
+roles = [
+  %{name: "ADMIN", description: "Super User", permissions: ["ALL"]} 
+]
+
+admin = %{
+ fname: "Mashekwa",
+ lname: "Sikatema",
+ gender: "m",
+ phone: "0779567086",
+ password: "12345",
+ role_id: 1,
+ token: UUID.uuid4()
+}
+
+ROLES.create_role(Enum.at(roles, 0))
+|> then(fn i -> USERS.create_user(admin) end )
 
 client_types = [ 
   %{type: "client"},

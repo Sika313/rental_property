@@ -36,6 +36,13 @@ defmodule RentalPropertyWeb.Router do
     end
   end
 
+  live_session :admin do
+    scope "/admin", RentalPropertyWeb do
+      pipe_through :browser
+      live "/landing_page", AdminLive
+    end
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", RentalPropertyWeb do
   #   pipe_through :api

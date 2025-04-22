@@ -3,6 +3,7 @@ defmodule RentalPropertyWeb.PageController do
   import Phoenix.LiveView.Controller
 
   alias RentalProperty.CLIENTS
+  alias RentalProperty.USERS
 
   def home(conn, _params) do
     # The home page is often custom made,
@@ -24,6 +25,8 @@ defmodule RentalPropertyWeb.PageController do
   end
 
   def handle_login(conn, params) do
+    case USERS.find_by_phone_and_password(params) do
+    {:error} ->
     case CLIENTS.find_by_phone_and_password(params) do
       {:ok, result} ->
         r = Map.from_struct(result)
@@ -35,6 +38,14 @@ defmodule RentalPropertyWeb.PageController do
         conn 
         |> put_flash(:error, "Credentials incorrect.")
         |> redirect(to: "/login")
+    end
+    {:ok, result} ->
+      r = Map.from_struct(result)
+      conn
+      |> put_flash(:info, "Logged in successfully.")
+      |> put_session(:token, r.token)
+      |> live_render(RentalPropertyWeb.AdminLive) 
+
     end
   end
 
