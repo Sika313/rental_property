@@ -18,9 +18,12 @@ alias RentalProperty.ROLES
 alias RentalProperty.USERS
 
 roles = [
-  %{name: "ADMIN", description: "Super User", permissions: ["ALL"]} 
+  %{name: "ADMIN", description: "Super User", permissions: ["ALL"]},
+  %{name: "ACCOUNTANT", description: "Collect payments and ensure they are valid", permissions: ["receive_payment", "request_tier_upgrade"]}
 ]
-
+for role <- roles do
+  ROLES.create_role(role)
+end
 admin = %{
  fname: "Mashekwa",
  lname: "Sikatema",
@@ -30,10 +33,7 @@ admin = %{
  role_id: 1,
  token: UUID.uuid4()
 }
-
-ROLES.create_role(Enum.at(roles, 0))
-|> then(fn i -> USERS.create_user(admin) end )
-
+USERS.create_user(admin)
 client_types = [ 
   %{type: "client"},
   %{type: "landlord_house"},

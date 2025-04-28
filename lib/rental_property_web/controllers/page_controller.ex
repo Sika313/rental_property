@@ -41,10 +41,14 @@ defmodule RentalPropertyWeb.PageController do
     end
     {:ok, result} ->
       r = Map.from_struct(result)
+      to_render = cond do
+        r.role_id == 1 -> RentalPropertyWeb.AdminLive 
+        r.role_id == 2 -> RentalPropertyWeb.AccountantLive 
+      end
       conn
       |> put_flash(:info, "Logged in successfully.")
       |> put_session(:token, r.token)
-      |> live_render(RentalPropertyWeb.AdminLive) 
+      |> live_render(to_render) 
 
     end
   end
