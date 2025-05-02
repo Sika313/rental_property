@@ -33,6 +33,7 @@ defmodule RentalPropertyWeb.Router do
     live "/landing_page", ClientLive
     live "/view_profile", ClientLive
     live "/edit_profile", EditProfileLive
+    live "/upgrade_tier", UpgradeTierLive
     end
   end
 
