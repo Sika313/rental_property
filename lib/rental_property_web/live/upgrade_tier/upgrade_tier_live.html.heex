@@ -1,25 +1,75 @@
-<h1 class="text-2xl text-center my-4">Upgrade tier.</h1>
+<div>
+
+<h1 class="text-2xl text-center my-4 bg-orange-500">UPGRADE TIER.</h1>
+
+ <p class="text-center mb-10"> Hey <%= @client.fname %> <%= @client.lname %>, upgrade your account to advertise your property. </p>
 <div class="flex flex-row flex-wrap justify-around text-gray-700">
 
- <div class="flex flex-col w-[20vw] text-center">
+ <div class="flex flex-col justify-between w-[20vw] text-center shadow-black shadow-xl rounded-b-md">
   <img src="/images/house.jpg" alt="House for rent" class="w-[100%] h-80 rounded-t-md" />
-  <p>Advertise your house(s) for rent or sale:</p>
+  <p>Advertise your house(s) for rent or sale</p>
+  <button phx-click={show_modal("house")} class="bg-blue-800 hover:bg-blue-600 transition-colors px-4 py-2 text-white rounded-b-md">Subscribe</button>
  </div>
 
- <div class="flex flex-col w-[20vw] text-center">
+ <div class="flex flex-col justify-between w-[20vw] text-center shadow-black shadow-xl rounded-b-md">
   <img src="/images/land.jpg" alt="House for rent" class="w-[100%] h-80 rounded-t-md" />
   <p>Advertise your land sale</p>
+  <button phx-click={show_modal("land")} class="bg-blue-800 hover:bg-blue-600 transition-colors px-4 py-2 text-white rounded-b-md">Subscribe</button>
  </div>
 
- <div class="flex flex-col w-[20vw] text-center">
+ <div class="flex flex-col justify-between w-[20vw] text-center shadow-black shadow-xl rounded-b-md">
   <img src="/images/shop.jpg" alt="House for rent" class="w-[100%] h-80 rounded-t-md" />
   <p>Advertise your shop(s) for rent or sale</p>
+  <button phx-click={show_modal("shop")} class="bg-blue-800 hover:bg-blue-600 transition-colors px-4 py-2 text-white rounded-b-md">Subscribe</button>
  </div>
 
- <div class="flex flex-col w-[20vw] text-center">
+ <div class="flex flex-col justify-between w-[20vw] text-center shadow-black shadow-xl rounded-b-md">
   <img src="/images/bh.jpg" alt="House for rent" class="w-[100%] h-80 rounded-t-md" />
   <p>Advertise your boarding house for rent</p>
+  <button phx-click={show_modal("bh")} class="bg-blue-800 hover:bg-blue-600 transition-colors px-4 py-2 text-white rounded-b-md">Subscribe</button>
  </div>
 
+</div>
+
+<.modal id="house">
+   <form phx-submit="pay_house" class="flex flex-col">
+    <label for="house">House</label>
+    <select id="house" name="house" class="mb-4">
+      <option value="K100" phx-click="house_price">For rent</option>
+      <option value="K150" phx-click="house_price">For sale</option>
+    </select>
+
+    <input type="text" value={@house_price} class="bg-gray-300 border-0 mb-4" disabled />
+
+    <label for="payment_method">Payment Method</label>
+    <select id="payment_method" name="payment_method" class="mb-4">
+      <option value="airtel">Airtel</option> 
+      <option value="mtn">MTN</option> 
+      <option value="zamtel">Zamtel</option> 
+    </select>
+
+    <label for="sender_phone">Enter your phone number</label>
+    <input type="text" id="sender_phone" name="sender_phone" class="mb-4" />
+
+    <label for="amount">Amount</label>
+    <input type="text" id="amount" name="amount" class="mb-4" />
+    <p>Ensure all the details are accurate before making the payment</p>
+    <button type="submit" class="bg-blue-700 hover:bg-blue-600 transition-colors px-2 py-4 text-white">Pay</button>
+    </form>
+</.modal>
+
+<.modal id="land">
+  <form>
+    
+  </form>
+</.modal>
+
+<.modal id="shop">
+  <h1>Shop</h1>
+</.modal>
+
+<.modal id="bh">
+  <h1>Boarding House</h1>
+</.modal>
 
 </div>

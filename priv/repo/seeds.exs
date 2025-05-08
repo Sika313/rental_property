@@ -16,6 +16,7 @@ alias RentalProperty.DISTRICT
 alias RentalProperty.PROVINCES
 alias RentalProperty.ROLES
 alias RentalProperty.USERS
+alias RentalProperty.NOTIFICATION_TYPES
 
 roles = [
   %{name: "ADMIN", description: "Super User", permissions: ["ALL"]},
@@ -197,4 +198,11 @@ end
 
 for i <- districts do
 DISTRICT.create_district(i)
+end
+
+types = [
+  %{name: "PAYMENT MADE", description: "Client made a payment to upgrade tier."}
+]
+for type <- types do
+NOTIFICATION_TYPES.create_notification_type(type)
 end

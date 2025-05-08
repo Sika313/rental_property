@@ -27,15 +27,13 @@ defmodule RentalPropertyWeb.Router do
     get "/logout", PageController, :logout
   end
 
-  live_session :client do
   scope "/client", RentalPropertyWeb do
     pipe_through :browser
     live "/landing_page", ClientLive
     live "/view_profile", ClientLive
     live "/edit_profile", EditProfileLive
-    live "/upgrade_tier", UpgradeTierLive
-    end
-  end
+    get "/upgrade_tier", ClientController, :upgrade_tier
+   end
 
   live_session :admin do
     scope "/admin", RentalPropertyWeb do

@@ -4,12 +4,21 @@ defmodule RentalPropertyWeb.ClientLive do
   alias RentalProperty.TYPES 
   alias RentalProperty.PROVINCES 
   alias RentalProperty.DISTRICT 
-  
+  alias RentalProperty.NOTIFICATIONS
+   
 
   def mount(_params, session, socket) do
    user = case CLIENTS.find_by_token(session["token"]) |> Map.from_struct() do
-   
+      
     result ->
+      notifications = case NOTIFICATIONS.get_by_client_id(result.id) do
+      [] -> []
+      results -> for result <- results do Map.from_struct(result) end
+      end
+      IO.inspect(notifications, label: "NOTIFICATION--->")
+      notification_total = Enum.count(notifications)
+      IO.inspect(notification_total, label: "TOTAL--->")
+
       properties = TYPES.list_types() 
       properties_map = for property <- properties do
         Map.from_struct(property)
@@ -24,6 +33,8 @@ defmodule RentalPropertyWeb.ClientLive do
       |> assign(:gender, result.gender)
       |> assign(:phone, result.phone)
       |> assign(:tenant, result.tenant)
+      |> assign(:notifications, notifications)
+      |> assign(:notification_total, notification_total)
       |> assign(:properties, properties_map)
       |> assign(:property, "House")
       |> assign(:provinces, provinces_map)
