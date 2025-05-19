@@ -17,7 +17,7 @@
   <!-- END -->
 
 <%= if @view_clients do %>
-  <.live_component module={ViewClientsComponent} id="view_clients" />
+  <.live_component module={ViewClientsComponent} id="view_clients" client={@client} tiers={@tiers} />
 <% end %>
 
 </div>

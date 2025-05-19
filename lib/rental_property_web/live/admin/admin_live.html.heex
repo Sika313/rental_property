@@ -5,7 +5,7 @@
     <img src="/images/admin.jpg" alt="Admin" class="w-20 h-20 rounded-full mb-4" />
     <u class="mb-4"><p>User Management</p></u>
     <a href="#" phx-click={show_modal("add_user")} class="mb-4 px-4 py-2 hover:bg-orange-300 transition-colors">Add User</a>
-    <a href="#" class="mb-4  px-4 py-2 hover:bg-orange-300 transition-colors">View Users</a>
+    <button phx-click="view_users" class="mb-4  px-4 py-2 hover:bg-orange-300 transition-colors">View Users</button>
     <u class="mb-4"><p>Property Management</p></u>
     <a href="#" class="mb-4  px-4 py-2 hover:bg-orange-300 transition-colors">Add category</a>
     <a href="#" class=" px-4 py-2 hover:bg-orange-300 transition-colors">View categories</a>
@@ -19,8 +19,11 @@
 </a>
   </div>
 
-
   <!-- END -->
+
+<%= if @view_users do %>
+<.live_component module={ViewUsersComponent} id="view_users" />
+<% end %>
 
 </div>
 

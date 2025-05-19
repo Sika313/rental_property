@@ -2,13 +2,21 @@ defmodule RentalPropertyWeb.AdminLive do
   use RentalPropertyWeb, :live_view
   alias RentalProperty.ROLES
   alias RentalProperty.USERS
+  alias RentalPropertyWeb.ViewUsersComponent 
 
   def mount(_params, session, socket) do
     roles = ROLES.list_roles()
     |> then(fn roles -> for i <- roles do Map.from_struct(i) end end )
     socket = socket
     |> assign(:roles, roles)
+    |> assign(:view_users, false)
     {:ok, socket}
+  end
+
+  def handle_event("close_view_users", _params, socket) do
+    socket = socket
+    |> assign(:view_users, false)
+    {:noreply, socket}
   end
 
   def handle_event("create_user", params, socket) do
@@ -33,6 +41,12 @@ defmodule RentalPropertyWeb.AdminLive do
         |> put_flash(:error, "User creation failed.")
         {:noreply, socket}
     end
+  end
+
+  def handle_event("view_users", _params, socket) do
+    socket = socket
+    |> assign(:view_users, true)
+    {:noreply, socket}
   end
 
 end
