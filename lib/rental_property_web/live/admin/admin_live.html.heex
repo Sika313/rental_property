@@ -1,7 +1,7 @@
 <div class="flex flex-row">
 
   <!-- NAV SECTION -->
-  <div class="flex flex-col w-[20vw] h-screen items-center pt-4 bg-orange-500 text-gray-800">
+  <div class="flex flex-col w-[20vw] items-center pt-4 bg-orange-500 text-gray-800">
     <img src="/images/admin.jpg" alt="Admin" class="w-20 h-20 rounded-full mb-4" />
     <u class="mb-4"><p>User Management</p></u>
     <a href="#" phx-click={show_modal("add_user")} class="mb-4 px-4 py-2 hover:bg-orange-300 transition-colors">Add User</a>
@@ -10,6 +10,15 @@
     <a href="#" class="mb-4  px-4 py-2 hover:bg-orange-300 transition-colors">Add category</a>
     <a href="#" class=" px-4 py-2 hover:bg-orange-300 transition-colors">View categories</a>
 
+    <u class="my-4"><p>Client Management</p></u>
+    <button phx-click="view_clients" class="mb-4 px-4 py-2 hover:bg-orange-300 transition-colors">View Clients</button>
+    <div class="flex flex-row items-center">
+    <p class="bg-violet-800 text-white p-2 rounded-full"><%= @total_pending_requests %></p>
+    <button phx-click={show_modal("view_upgrade_requests")} class="mb-4 px-4 py-2 hover:bg-orange-300 transition-colors">View upgrade requests</button>
+    </div>
+    <u class="mb-4"><p>Property Management</p></u>
+    <a href="#" class="mb-4  px-4 py-2 hover:bg-orange-300 transition-colors">Add category</a>
+    <a href="#" class=" px-4 py-2 hover:bg-orange-300 transition-colors">View categories</a>
 
 <a href="/logout" class="flex flex-row items-center mt-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -25,9 +34,17 @@
 <.live_component module={ViewUsersComponent} id="view_users" />
 <% end %>
 
+<%= if @view_clients do %>
+<.live_component module={ViewClientsComponent} id="view_clients" client={@client} tiers={@tiers} />
+<% end %>
+
+
 </div>
 
 <.modal id="add_user">
+<%= if @total_pending_requests == 0 do %>
+  <h1>No notifications</h1>
+<% else %>
   <form method="post" action="/admin/add_user" phx-submit="create_user" class="flex flex-col h-[70vh] justify-around">
     <label for="fname">First Name:</label>
     <input type="text" id="fname" name="fname" placeholder="First name" />
@@ -51,4 +68,24 @@
   
     <button type="submit" class="text-white bg-blue-800 hover:bg-blue-700 transition-colors px-2 py-4" phx-click={hide_modal("add_user")}>Submit</button>
   </form>
+<% end %>
+</.modal>
+
+<.modal id="view_upgrade_requests">
+<ul>
+  <%= for client_pending_request <- @clients_pending_requests do %>
+    <li>
+      <form phx-submit="approve_upgrade" class="flex flex-col">
+      <span><%= client_pending_request.fname %> <%= client_pending_request.lname %></span>
+      <span> <%= client_pending_request.phone %> </span>
+      <span>Upgrade type: <%= client_pending_request.upgrade_to.type %> </span>
+      <input type="text" name="client_id" value={client_pending_request.id} class="hidden" />
+      <input type="text" name="request_id" value={client_pending_request.request_id} class="hidden" />
+
+      <input type="text" name="tier_id" value={client_pending_request.upgrade_to.id} class="hidden" />
+      <button phx-click={hide_modal("view_upgrade_requests")} class="bg-blue-500 text-white px-4 py-2">Approve</button>
+      </form>
+    </li>
+  <% end %>
+</ul>
 </.modal>

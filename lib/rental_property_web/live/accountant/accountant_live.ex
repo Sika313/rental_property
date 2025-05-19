@@ -4,6 +4,7 @@ defmodule RentalPropertyWeb.AccountantLive do
   alias RentalProperty.USERS
   alias RentalProperty.CLIENTS
   alias RentalProperty.TIERS
+  alias RentalProperty.TIER_UPGRADES
   alias RentalPropertyWeb.ViewClientsComponent
 
   def mount(_params, session, socket) do
@@ -16,7 +17,7 @@ defmodule RentalPropertyWeb.AccountantLive do
     |> assign(:roles, roles)
     |> assign(:tiers, tiers)
     |> assign(:view_clients, false)
-    |> assign(:client, %{fname: "", lname: "",gender: "", phone: "" })
+    |> assign(:client, %{id: "", fname: "", lname: "",gender: "", phone: "" })
     {:ok, socket}
   end
 
@@ -33,7 +34,6 @@ defmodule RentalPropertyWeb.AccountantLive do
   end
   
   def handle_event("upgrade_tier", params, socket) do
-    IO.inspect(params, label: "UT--->")
     client = CLIENTS.get_client!(String.to_integer(params["client_id"])) |> Map.from_struct()
     socket = socket
     |> assign(:client, client)
@@ -41,6 +41,13 @@ defmodule RentalPropertyWeb.AccountantLive do
   end
 
   def handle_event("handle_upgrade_tier", params, socket) do
+    IO.inspect(params, label: "P--->")
+    tier_upgrade_request = %{
+      client_id: String.to_integer(params["client_id"]),
+      tier_id: String.to_integer(params["tier_id"]),
+      status: "pending"
+    }
+    TIER_UPGRADES.create_tier_upgrade(tier_upgrade_request)
     socket = socket
     |> put_flash(:info, "Upgrade request sent to admin for approval.")
     {:noreply, socket}

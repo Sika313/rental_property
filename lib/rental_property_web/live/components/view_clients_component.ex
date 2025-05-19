@@ -7,11 +7,12 @@ defmodule RentalPropertyWeb.ViewClientsComponent do
     clients = for client <- CLIENTS.list_clients do
       Map.from_struct(client)
     end
+    clients_with_tier = for client <- clients do
+      tier = TIERS.get_tier!(client.tier_id) |> Map.from_struct()
+      Map.put(client, :tier_name, tier.type)
+    end
     tiers = for client <- clients do
       TIERS.get_tier!(client.tier_id) |> Map.from_struct()
-    end
-    clients_with_tier = for client <- clients do
-      Map.put(client, :tier, Enum.at(tiers, client.id - 1))
     end
     IO.inspect(assigns.client, label: "PARENT CLIENT--->")
     socket = socket
@@ -24,7 +25,6 @@ defmodule RentalPropertyWeb.ViewClientsComponent do
 
   def render(assigns) do
    ~H"""
-
 
 <div class="relative overflow-x-auto">
     <button phx-click="close_view_clients">
@@ -72,7 +72,7 @@ defmodule RentalPropertyWeb.ViewClientsComponent do
                   <%= client.phone %>  
                 </td>
                 <td class="px-6 py-4">
-                  <%= client.tier.type %>  
+                  <%= client.tier_name %>  
                 </td>
                 <td class="px-6 py-4">
                 <form phx-submit="upgrade_tier">
@@ -90,6 +90,7 @@ defmodule RentalPropertyWeb.ViewClientsComponent do
         <p> <%= @client.fname %> <%= @client.lname %> </p>
         <p> <%= @client.gender %> </p>
         <p> <%= @client.phone %> </p>
+          <input type="text" name="client_id" value={@client.id} class="hidden" />
           <label for="tiers">Choose tier</label>
           <select id="tiers" name="tier_id">
             <%= for tier <- @tiers do %>
