@@ -2,8 +2,15 @@ defmodule RentalPropertyWeb.UpgradeTierLive do
   use RentalPropertyWeb, :live_view
   alias RentalProperty.CLIENTS
   alias RentalProperty.NOTIFICATIONS
+  alias RentalProperty.NOTIFICATION_TYPES
 
   def mount(_params, session, socket) do
+    notification_types =  NOTIFICATION_TYPES.list_notification_types() 
+
+    notification_types = for nt <- notification_types do
+      Map.from_struct(nt)
+    end
+    notification_msg = Enum.at(notification_types, 0)
     result = case CLIENTS.find_by_token(session["token"]) do
       nil ->
         socket = socket
@@ -16,6 +23,7 @@ defmodule RentalPropertyWeb.UpgradeTierLive do
         |> assign(:client, r)
         |> assign(:choice, "House")
         |> assign(:house_price, "K100")
+        |> assign(:notification_msg, notification_msg)
 
         {:ok, socket}
     end
@@ -33,10 +41,9 @@ defmodule RentalPropertyWeb.UpgradeTierLive do
     notification = %{
       type_id: 1,
       client_id: socket.assigns.client.id,
-      description: "Your payment was successful. Your account will be upgraded within 24hrs."
+      description: socket.assigns.notification_msg.description 
     }
     NOTIFICATIONS.create_notification(notification) 
-    IO.inspect(params, label: "PARAMS--->")
     socket = socket
     |> put_flash(:info, "Payment successful.")
     |> redirect(to: "/client/landing_page")

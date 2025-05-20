@@ -5,6 +5,9 @@ defmodule RentalPropertyWeb.ClientLive do
   alias RentalProperty.PROVINCES 
   alias RentalProperty.DISTRICT 
   alias RentalProperty.NOTIFICATIONS
+  alias RentalProperty.UPLOADS
+  alias RentalProperty.TIERS
+  alias RentalPropertyWeb.AddPropertyComponent
    
 
   def mount(_params, session, socket) do
@@ -15,7 +18,6 @@ defmodule RentalPropertyWeb.ClientLive do
       [] -> []
       results -> for result <- results do Map.from_struct(result) end
       end
-      IO.inspect(notifications, label: "NOTIFICATION--->")
       notification_total = Enum.count(notifications)
       IO.inspect(notification_total, label: "TOTAL--->")
 
@@ -28,6 +30,7 @@ defmodule RentalPropertyWeb.ClientLive do
         Map.from_struct(province)
       end
       socket = socket
+      |> assign(:tier_id, result.tier_id)
       |> assign(:fname, result.fname)
       |> assign(:lname, result.lname)
       |> assign(:gender, result.gender)
@@ -36,11 +39,17 @@ defmodule RentalPropertyWeb.ClientLive do
       |> assign(:notifications, notifications)
       |> assign(:notification_total, notification_total)
       |> assign(:properties, properties_map)
+      |> assign(:properties_component, properties_map)
       |> assign(:property, "House")
+      |> assign(:property_component, "House")
       |> assign(:provinces, provinces_map)
       |> assign(:search_area, false)
       |> assign(:districts, [])
       |> assign(:district_area, false)
+      |> assign(:add_category, false)
+      |> assign(:uploaded_files, [])
+      |> allow_upload(:avatar, accept: ~w(.jpg), max_entries: 2)
+
      {:ok, socket} 
     {:error} ->
       []
@@ -53,6 +62,12 @@ defmodule RentalPropertyWeb.ClientLive do
       {:ok, socket}
     end
     user
+  end
+
+  def handle_event("close_add_category", _params, socket) do
+    socket = socket
+    |> assign(:add_category, false)
+    {:noreply, socket}
   end
 
   def handle_event("category", params, socket) do
@@ -83,5 +98,43 @@ defmodule RentalPropertyWeb.ClientLive do
   def handle_event("district", params, socket) do
     {:noreply, socket}
   end
+
+
+
+  def handle_event("save", params, socket) do
+  IO.inspect(params, label: "PARAMS--->")
+  uploaded_files =
+    consume_uploaded_entries(socket, :avatar, fn %{path: path}, _entry ->
+      dest = Path.join(Application.app_dir(:rental_property, "priv/static/images/uploads"), Path.basename(path))
+      # You will need to create `priv/static/uploads` for `File.cp!/2` to work.
+      File.cp!(path, dest <> ".jpg")
+      file_name = String.splitter(dest, "/") |> Enum.take(-1)
+      full_file_name = Enum.at(file_name, 0) <> ".jpg"
+
+      tier_name = TIERS.get_tier!(socket.assigns.tier_id)
+      tier_name = Map.from_struct(tier_name)
+
+      uploads = %{
+        name: tier_name.type,
+        file_path: full_file_name,
+        client_id: socket.assigns.client.id
+      }
+      
+      UPLOADS.create_upload(uploads)
+      {:ok, ~p"/uploads/#{Path.basename(dest)}"}
+    end)
+    {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
+  end
+
+  def handle_event("validate", _params, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("add_property", _params, socket) do
+    socket = socket
+    |> assign(:add_category, true)
+    {:noreply, socket}
+  end
+
 
 end

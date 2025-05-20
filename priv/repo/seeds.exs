@@ -201,7 +201,8 @@ DISTRICT.create_district(i)
 end
 
 types = [
-  %{name: "PAYMENT MADE", description: "Client made a payment to upgrade tier."}
+  %{name: "PAYMENT MADE", description: "Your payment for tier upgrade is currently being processed. You will be notified once tier is successful. Thank you for your kind support."},
+  %{name: "ACCOUNT UPGRADED", description: "Your account upgrade was successful. You can now upload your property for all to see."}
 ]
 for type <- types do
 NOTIFICATION_TYPES.create_notification_type(type)

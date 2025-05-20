@@ -5,10 +5,21 @@ defmodule RentalPropertyWeb.AdminLive do
   alias RentalProperty.CLIENTS
   alias RentalProperty.TIERS
   alias RentalProperty.TIER_UPGRADES
+  alias RentalProperty.TYPES
+  alias RentalProperty.NOTIFICATIONS
+  alias RentalProperty.NOTIFICATION_TYPES
   alias RentalPropertyWeb.ViewUsersComponent 
+  alias RentalPropertyWeb.ViewCategoriesComponent 
   alias RentalPropertyWeb.ViewClientsComponent
 
   def mount(_params, session, socket) do
+    notification_types =  NOTIFICATION_TYPES.list_notification_types() 
+
+    notification_types = for nt <- notification_types do
+      Map.from_struct(nt)
+    end
+    notification_msg = Enum.at(notification_types, 1)
+
     pending_requests = TIER_UPGRADES.get_pending_requests() |> then(
       fn requests -> for request <- requests do Map.from_struct(request) end end
       
@@ -20,7 +31,7 @@ defmodule RentalPropertyWeb.AdminLive do
       |> Map.put(:request_id, pending_request.id)
     end
 
-    total_pending_requests = Enum.count(pending_requests) |> IO.inspect(label: "Total pending requests--->")
+    total_pending_requests = Enum.count(pending_requests) 
 
 
     roles = ROLES.list_roles()
@@ -30,9 +41,11 @@ defmodule RentalPropertyWeb.AdminLive do
       fn tiers -> for tier <- tiers do Map.from_struct(tier) end end
     )
     socket = socket
+    |> assign(:notification_msg, notification_msg)
     |> assign(:roles, roles)
     |> assign(:tiers, tiers)
     |> assign(:view_users, false)
+    |> assign(:view_categories, false)
     |> assign(:total_pending_requests, total_pending_requests)
     |> assign(:clients_pending_requests, clients_pending_requests)
     |> assign(:client, %{id: "", fname: "", lname: "",gender: "", phone: "" })
@@ -48,6 +61,17 @@ defmodule RentalPropertyWeb.AdminLive do
   def handle_event("close_view_clients", _params, socket) do
     socket = socket
     |> assign(:view_clients, false)
+    {:noreply, socket}
+  end
+  def handle_event("close_view_categories", _params, socket) do
+    socket = socket
+    |> assign(:view_categories, false)
+    {:noreply, socket}
+  end
+
+  def handle_event("view_categories", _params, socket) do
+    socket = socket
+    |> assign(:view_categories, true)
     {:noreply, socket}
   end
 
@@ -91,13 +115,28 @@ defmodule RentalPropertyWeb.AdminLive do
     CLIENTS.update_client( client, %{ tier_id: String.to_integer(params["tier_id"]) } )
     tier_upgrade_request = TIER_UPGRADES.get_tier_upgrade!(String.to_integer(params["request_id"])) |> IO.inspect(label: "TEST--->")
     TIER_UPGRADES.update_tier_upgrade(tier_upgrade_request, %{status: "approve"})
+    client = Map.from_struct(client)
+    notification = %{
+      type_id: 2,
+      client_id: client.id,
+      description: socket.assigns.notification_msg.description 
+    }
+    NOTIFICATIONS.create_notification(notification) 
+    pending_requests = TIER_UPGRADES.get_pending_requests() |> then(
+      fn requests -> for request <- requests do Map.from_struct(request) end end
+    ) 
+    total_pending_requests = Enum.count(pending_requests) 
+
     socket = socket
+    |> assign(:total_pending_requests, total_pending_requests)
     |> put_flash(:info, "Client tier updated successfully.")
     {:noreply, socket}
   end
   
   def handle_event("upgrade_tier", params, socket) do
+
     client = CLIENTS.get_client!(String.to_integer(params["client_id"])) |> Map.from_struct()
+
     socket = socket
     |> assign(:client, client)
     {:noreply, socket}
@@ -110,10 +149,18 @@ defmodule RentalPropertyWeb.AdminLive do
       tier_id: String.to_integer(params["tier_id"]),
       status: "pending"
     }
+
     TIER_UPGRADES.create_tier_upgrade(tier_upgrade_request)
     socket = socket
     |> put_flash(:info, "Upgrade request sent to admin for approval.")
     {:noreply, socket}
   end
 
+  def handle_event("handle_add_category", params, socket) do
+    type = %{property_type: params["name"]}
+    TYPES.create_type(type) 
+    socket = socket
+    |> put_flash(:info, "Category successfully added.")
+    {:noreply, socket}
+  end
 end

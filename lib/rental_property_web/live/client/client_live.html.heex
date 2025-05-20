@@ -12,9 +12,7 @@ end}
 alt="image" class="w-20 h-20 rounded-full mb-4" />
 
 <h1 class="text-xl mb-4"><%= @fname %> <%= @lname %></h1>
-
 <div class="flex flex-col w-[90%] text-center">
-
 <button phx-click={show_modal("view_profile")} class="flex flex-row items-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -35,12 +33,23 @@ Messages
 </svg>
 Notifications
 </button> 
+<%= if @tier_id == 1 do %>
 <a href="/client/upgrade_tier" class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2">
   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
 </svg>
 Upgrade tier
 </a> 
+<% end %>
+<%= if @tier_id == 5 do %>
+<button phx-click="add_property" class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+</svg>
+Upload your house for sale.
+</button> 
+
+<% end %>
 </div>
 
 <!-- END -->
@@ -55,6 +64,7 @@ Upgrade tier
 </div>
   <!-- END -->
 
+<div class="flex flex-col">
 
 <div class="flex flex-row h-screen py-4 px-4">
 
@@ -97,6 +107,14 @@ Upgrade tier
 
   <!-- END -->
 
+
+<%= if @add_category do %>
+<.live_component module={AddPropertyComponent} id="add_category"
+properties={@properties_component} property={@property_component} />
+<% end %>
+
+</div>
+
 </div>
 
 
@@ -123,3 +141,12 @@ Upgrade tier
   </ul>
 </.modal>
   <!-- END -->
+
+<.modal id="upload_property">
+<form id="upload-form" phx-submit="save" phx-change="validate">
+  <.live_file_input upload={@uploads.avatar} /> <br />
+  <button type="submit" phx-click={hide_modal("upload_property")}>Upload</button>
+</form>
+
+</.modal>
+
