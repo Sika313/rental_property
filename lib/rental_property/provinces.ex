@@ -9,6 +9,16 @@ defmodule RentalProperty.PROVINCES do
   alias RentalProperty.PROVINCES.Province
 
   @doc """
+    USER DEFINED FUNCTIONS
+
+  """
+  def get_province_by_name(province) do
+    IO.inspect(province)
+    query = from p in Province, where: p.name == ^province
+    Repo.all(query)
+  end
+
+  @doc """
   Returns the list of provinces.
 
   ## Examples

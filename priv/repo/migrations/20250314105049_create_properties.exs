@@ -16,6 +16,7 @@ defmodule RentalProperty.Repo.Migrations.CreateProperties do
       add :client_id, references(:clients, column: :id, on_delete: :nothing) 
       add :type_id, references(:types, column: :id, on_delete: :nothing)
       add :province_id, references(:provinces, column: :id, on_delete: :nothing)
+      add :district_id, references(:districts, column: :id, on_delete: :nothing)
       timestamps(type: :utc_datetime)
     end
   end

@@ -1,5 +1,5 @@
 
-<div class="flex flex-row">
+<div class="flex flex-row h-screen">
 
   <!-- NAVIGATION SECTION -->
 <div class="fex flex-col w-[20vw] text-sm pl-2 pt-4 bg-orange-500">
@@ -42,7 +42,7 @@ Upgrade tier
 </a> 
 <% end %>
 <%= if @tier_id == 5 do %>
-<button phx-click="add_property" class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
+<button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
 </svg>
@@ -63,10 +63,10 @@ Upload your house for sale.
 
 </div>
   <!-- END -->
+<%= if @search_area do %>
 
 <div class="flex flex-col">
-
-<div class="flex flex-row h-screen py-4 px-4">
+<form phx-submit="handle_search" class="flex flex-row py-4 px-4">
 
 <!-- CATEGORIES -->
 <span>
@@ -102,21 +102,33 @@ Upload your house for sale.
  <% end %>
 </select>
 </span>
-</div>
+<span>
+<button type="submit" phx-click="search">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+</svg>
+</button>
+</span>
 
-
+</form>
   <!-- END -->
 
+<%= if @search do %>
+<.live_component module={SearchComponent} id="add_category"
+properties={@properties_component} search_map={@search_map} />
+<% end %>
 
-<%= if @add_category do %>
+
+
+</div>
+<% end %>
+
+<%= if @add_property do %>
 <.live_component module={AddPropertyComponent} id="add_category"
-properties={@properties_component} property={@property_component} />
+properties={@properties_component} property={@property} provinces={@provinces} districts={@districts} tier_id={@tier_id} />
 <% end %>
 
 </div>
-
-</div>
-
 
   <!-- EDIT PROFILE -->
 <.modal id="view_profile">
@@ -143,9 +155,45 @@ properties={@properties_component} property={@property_component} />
   <!-- END -->
 
 <.modal id="upload_property">
-<form id="upload-form" phx-submit="save" phx-change="validate">
-  <.live_file_input upload={@uploads.avatar} /> <br />
-  <button type="submit" phx-click={hide_modal("upload_property")}>Upload</button>
+<form id="upload-form" phx-submit="save" phx-change="validate" class="flex flex-col">
+
+ <.live_file_input upload={@uploads.avatar} /> <br />
+<input type="text" id="category" name="category" class="hidden" />
+  <!-- PROVINCE -->
+<span>
+<label for="province">Province</label>
+<select id="province" name="province" class="mr-10">
+ <%= for province <- @provinces do %>
+  <option phx-value-province_id={province.id} value={province.id} phx-click="province"> <%= province.name %> </option>
+ <% end %>
+</select>
+</span>
+
+  <!-- DISTRICT -->
+<span>
+<label for="district">District</label>
+<select id="district" name="district">
+ <%= for district <- @districts do %>
+  <option phx-value-district_id={district.id} value={district.id} phx-click="district" selected> <%= district.name %> </option>
+ <% end %>
+</select>
+</span>
+
+<label for="number_of_rooms">Number of rooms</label>
+<input id="number_of_rooms" name="number_of_rooms" />
+
+<label for="location">Location</label>
+<input id="location" name="location" />
+
+<label for="description">Description</label>
+<input id="description" name="description" />
+
+<label for="price">Price</label>
+<input id="price" name="price" />
+
+
+
+<button type="submit" phx-click={hide_modal("upload_property")}>Upload</button>
 </form>
 
 </.modal>

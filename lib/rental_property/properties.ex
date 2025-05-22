@@ -8,6 +8,18 @@ defmodule RentalProperty.PROPERTIES do
 
   alias RentalProperty.PROPERTIES.Property
 
+
+  @doc """
+    USER DEFINED FUNCTIONS
+
+  """
+  def get_by_map(map) do
+    IO.inspect(map.type_id, label: "MAAAAPPP--->")
+    query = from p in Property, where: p.type_id == ^map.type_id and p.province_id == ^map.province_id and p.district_id == ^map.district_id 
+    Repo.all(query)
+  end
+
+
   @doc """
   Returns the list of properties.
 
@@ -20,6 +32,7 @@ defmodule RentalProperty.PROPERTIES do
   def list_properties do
     Repo.all(Property)
   end
+
 
   @doc """
   Gets a single property.

@@ -7,7 +7,9 @@ defmodule RentalPropertyWeb.ClientLive do
   alias RentalProperty.NOTIFICATIONS
   alias RentalProperty.UPLOADS
   alias RentalProperty.TIERS
+  alias RentalProperty.PROPERTIES
   alias RentalPropertyWeb.AddPropertyComponent
+  alias RentalPropertyWeb.SearchComponent
    
 
   def mount(_params, session, socket) do
@@ -19,7 +21,6 @@ defmodule RentalPropertyWeb.ClientLive do
       results -> for result <- results do Map.from_struct(result) end
       end
       notification_total = Enum.count(notifications)
-      IO.inspect(notification_total, label: "TOTAL--->")
 
       properties = TYPES.list_types() 
       properties_map = for property <- properties do
@@ -32,6 +33,7 @@ defmodule RentalPropertyWeb.ClientLive do
       socket = socket
       |> assign(:tier_id, result.tier_id)
       |> assign(:fname, result.fname)
+      |> assign(:client_id, result.id)
       |> assign(:lname, result.lname)
       |> assign(:gender, result.gender)
       |> assign(:phone, result.phone)
@@ -41,12 +43,14 @@ defmodule RentalPropertyWeb.ClientLive do
       |> assign(:properties, properties_map)
       |> assign(:properties_component, properties_map)
       |> assign(:property, "House")
-      |> assign(:property_component, "House")
       |> assign(:provinces, provinces_map)
-      |> assign(:search_area, false)
+      |> assign(:search, false)
+      |> assign(:search_area, true)
       |> assign(:districts, [])
       |> assign(:district_area, false)
       |> assign(:add_category, false)
+      |> assign(:add_property, false)
+      |> assign(:search_map, %{type_id: 1, province_id: 1, district_id: 1})
       |> assign(:uploaded_files, [])
       |> allow_upload(:avatar, accept: ~w(.jpg), max_entries: 2)
 
@@ -64,16 +68,23 @@ defmodule RentalPropertyWeb.ClientLive do
     user
   end
 
-  def handle_event("close_add_category", _params, socket) do
+  def handle_event("close_add_property", _params, socket) do
     socket = socket
-    |> assign(:add_category, false)
+    |> assign(:add_property, false)
+    |> assign(:search_area, true)
     {:noreply, socket}
   end
+
+  def handle_event("close_search", _params, socket) do
+    socket = socket
+    |> assign(:search, false)
+    {:noreply, socket}
+  end
+
 
   def handle_event("category", params, socket) do
     socket = socket
     |> assign(:property, params["property"])
-    |> assign(:search_area, true)
     {:noreply, socket}
   end
 
@@ -115,12 +126,25 @@ defmodule RentalPropertyWeb.ClientLive do
       tier_name = Map.from_struct(tier_name)
 
       uploads = %{
-        name: tier_name.type,
-        file_path: full_file_name,
-        client_id: socket.assigns.client.id
+        number_of_rooms: params["number_of_rooms"],
+        location: params["location"],
+        description: params["description"],
+        price: params["price"],
+        occupied: false,
+        image_one: full_file_name,
+        image_two: "two",
+        image_three: "three",
+        image_four: "four",
+        client_id: socket.assigns.client_id,
+        type_id: socket.assigns.tier_id,
+        province_id: String.to_integer(params["province"]),
+        district_id: String.to_integer(params["district"])
       }
+      p = String.to_integer(params["province"]) 
+      IO.inspect(p)
+      IO.inspect(uploads)
       
-      UPLOADS.create_upload(uploads)
+      PROPERTIES.create_property(uploads)
       {:ok, ~p"/uploads/#{Path.basename(dest)}"}
     end)
     {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
@@ -132,7 +156,34 @@ defmodule RentalPropertyWeb.ClientLive do
 
   def handle_event("add_property", _params, socket) do
     socket = socket
-    |> assign(:add_category, true)
+    |> assign(:search_area, false)
+    |> assign(:add_property, true)
+    {:noreply, socket}
+  end
+
+  def handle_event("handle_add_property", params, socket) do
+    IO.inspect(params, label: "UPLOAD--->")
+    {:noreply, socket}
+  end
+
+  def handle_event("search", _params, socket) do
+    socket = socket
+    |> assign(:search, true)
+    {:noreply, socket}
+  end
+
+  def handle_event("handle_search", params, socket) do
+    IO.inspect(params, label: "HANDLE SEARCH--->")
+    type = TYPES.get_type_by_name(params["property"]) |> Enum.at(0) |> Map.from_struct()
+
+    province = PROVINCES.get_province_by_name(params["province"]) |> Enum.at(0) |> Map.from_struct()
+    district = DISTRICT.get_district_by_name(params["district"]) |> Enum.at(0) |> Map.from_struct()
+
+    search = %{type_id: type.id, province_id: province.id, district_id: district.id}
+    IO.inspect(search, label: "SEARCH--->")
+    socket = socket
+    |> assign(:search_map, search)
+    |> assign(:search, true)
     {:noreply, socket}
   end
 

@@ -1,6 +1,6 @@
 defmodule RentalProperty.TYPES.Type do
   use Ecto.Schema
- users import Ecto.Changeset
+  import Ecto.Changeset
 
   schema "types" do
     field :property_type, :string

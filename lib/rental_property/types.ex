@@ -8,6 +8,18 @@ defmodule RentalProperty.TYPES do
 
   alias RentalProperty.TYPES.Type
 
+
+  @doc """
+    USER DEFINED FUNCTIONS
+
+  """
+  def get_type_by_name(type) do
+    IO.inspect(type)
+    query = from t in Type, where: t.property_type == ^type
+    Repo.all(query)
+  end
+
+
   @doc """
   Returns the list of types.
 

@@ -19,6 +19,14 @@ defmodule RentalProperty.DISTRICT do
     end
   end
 
+  def get_district_by_name(district) do
+    IO.inspect(district)
+    query = from d in District, where: d.name == ^district
+    Repo.all(query)
+  end
+
+
+
   @doc """
   Returns the list of districts.
 
