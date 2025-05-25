@@ -26,6 +26,7 @@ defmodule RentalPropertyWeb.SearchComponent do
           <%= for property <- @result_map do %>
             <div class="flex flex-col">
               <img src={"/images/uploads/" <> property.image_one} alt="Img" class="w-60 h-60" />
+              <p><%= property.description %></p>
               <p><%= property.price %></p>
             </div>
           <% end %>
