@@ -3,6 +3,7 @@ defmodule RentalPropertyWeb.SearchComponent do
   alias RentalProperty.PROPERTIES
 
   def update(assigns, socket) do
+    IO.inspect(assigns.search_map, label: "MAAAAPPP--->")
     results = PROPERTIES.get_by_map(assigns.search_map) 
     result_map = cond do
       results != [] -> for r <- results do Map.from_struct(r) end
@@ -21,7 +22,6 @@ defmodule RentalPropertyWeb.SearchComponent do
         <%= if @result_map == [] do %>
           <h1>No item found</h1>
         <% else %>
-        <h1>---LOADING---</h1>
          <div class="flex flex-row justify-around">  
           <%= for property <- @result_map do %>
             <div class="flex flex-col">

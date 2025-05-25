@@ -4,6 +4,8 @@ defmodule RentalProperty.TYPES.Type do
 
   schema "types" do
     field :property_type, :string
+    field :client_type, :integer
+
 
     timestamps(type: :utc_datetime)
   end
@@ -11,7 +13,7 @@ defmodule RentalProperty.TYPES.Type do
   @doc false
   def changeset(type, attrs) do
     type
-    |> cast(attrs, [:property_type])
-    |> validate_required([:property_type])
+    |> cast(attrs, [:property_type, :client_type])
+    |> validate_required([:property_type, :client_type])
   end
 end

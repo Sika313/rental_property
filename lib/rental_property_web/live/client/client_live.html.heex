@@ -74,7 +74,7 @@ Upload your house for sale.
 <select id="property" name="property" class="mr-10">
  <%= for property <- @properties do %>
   <%= if property.property_type == @property do %>
-  <option phx-value-property={property.property_type} phx-click="category" selected> <%= property.property_type %> </option>
+  <option phx-value-property={property.client_type} phx-click="category" selected> <%= property.property_type %> </option>
   <% else %>
   <option phx-value-property={property.property_type} phx-click="category"> <%= property.property_type %> </option>
   <% end %>
@@ -190,8 +190,6 @@ properties={@properties_component} property={@property} provinces={@provinces} d
 
 <label for="price">Price</label>
 <input id="price" name="price" />
-
-
 
 <button type="submit" phx-click={hide_modal("upload_property")}>Upload</button>
 </form>

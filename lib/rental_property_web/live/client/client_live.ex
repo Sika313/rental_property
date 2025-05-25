@@ -175,17 +175,17 @@ defmodule RentalPropertyWeb.ClientLive do
   def handle_event("handle_search", params, socket) do
     IO.inspect(params, label: "HANDLE SEARCH--->")
     type = TYPES.get_type_by_name(params["property"]) |> Enum.at(0) |> Map.from_struct()
+    IO.inspect(type, label: "TYPE--->")
 
     province = PROVINCES.get_province_by_name(params["province"]) |> Enum.at(0) |> Map.from_struct()
     district = DISTRICT.get_district_by_name(params["district"]) |> Enum.at(0) |> Map.from_struct()
 
-    search = %{type_id: type.id, province_id: province.id, district_id: district.id}
+    search = %{type_id: type.client_type, province_id: province.id, district_id: district.id}
     IO.inspect(search, label: "SEARCH--->")
     socket = socket
     |> assign(:search_map, search)
     |> assign(:search, true)
     {:noreply, socket}
   end
-
 
 end

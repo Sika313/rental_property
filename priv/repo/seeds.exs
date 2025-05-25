@@ -45,11 +45,11 @@ client_types = [
 ]
 
 property_types = [
-  %{property_type: "House"},
-  %{property_type: "shop"},
-  %{property_type: "Boarding house"},
-  %{property_type: "House for sell"},
-  %{property_type: "Land for sell"}
+  %{property_type: "House", client_type: 2},
+  %{property_type: "shop", client_type: 3},
+  %{property_type: "Boarding house", client_type: 4},
+  %{property_type: "House for sell", client_type: 5},
+  %{property_type: "Land for sell", client_type: 6}
 ]
 
 provinces = [
