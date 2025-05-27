@@ -19,6 +19,11 @@ defmodule RentalProperty.PROPERTIES do
     Repo.all(query)
   end
 
+  def find_by_client_id(client_id) do
+    query = from p in Property, where: p.client_id == ^client_id
+    Repo.all(query)
+  end
+
 
   @doc """
   Returns the list of properties.
@@ -84,6 +89,9 @@ defmodule RentalProperty.PROPERTIES do
     property
     |> Property.changeset(attrs)
     |> Repo.update()
+  end
+  def test(params) do
+    IO.inspect(params, label: "TESTING--->")
   end
 
   @doc """

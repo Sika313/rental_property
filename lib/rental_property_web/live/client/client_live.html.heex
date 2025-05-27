@@ -43,7 +43,7 @@ Upgrade tier
 <% end %>
 
 
-<%= if @tier_id == 5 do %>
+<%= if @tier_id == 5 && @client_properties == [] do %>
 <button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -54,7 +54,7 @@ Upload your house for sale.
 <% end %>
 
 
-<%= if @tier_id == 3 do %>
+<%= if @tier_id == 3 && @client_properties == [] do %>
 <button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -65,7 +65,7 @@ Upload your rent.
 <% end %>
 
 
-<%= if @tier_id == 6 do %>
+<%= if @tier_id == 6 && @client_properties == [] do %>
 <button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -75,7 +75,7 @@ Upload your land.
 
 <% end %>
 
-<%= if @tier_id == 4 do %>
+<%= if @tier_id == 4 && @client_properties == [] do %>
 <button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -85,7 +85,7 @@ Upload your boarding house for rent.
 
 <% end %>
 
-<%= if @tier_id == 2 do %>
+<%= if @tier_id == 2 && @client_properties == [] do %>
 <button phx-click={show_modal("upload_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -94,6 +94,17 @@ Upload your house for rent.
 </button> 
 
 <% end %>
+
+<%= if @client_properties != [] do %>
+<button phx-click={show_modal("view_property")} class="flex flex-row ietms-center bg-blue-800 hover:bg-blue-600 transition-colors rounded-md text-white px-4 py-2 mt-4 mb-4">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+</svg>
+View property
+</button> 
+
+<% end %>
+
 
 </div>
 
@@ -242,3 +253,26 @@ properties={@properties_component} property={@property} provinces={@provinces} d
 
 </.modal>
 
+<.modal id="view_property">
+<%= for client_property <- @client_properties do %>
+   <div class="flex flex-col">
+   <img src={"/images/uploads/" <> client_property.image_one} alt="Img" class="w-60 h-60" />
+   <p>Description: <%= client_property.description %></p>
+   <p >Price: <%= client_property.price %></p>
+   <%= if client_property.occupied == false do %>
+   <p>Status: available</p>
+   <% else %>
+   <p>Status: Not available</p>
+   <% end %>
+   <form phx-submit="change_status" class="flex flex-row items-center my-4">
+    <label for="change_status">Change status</label> 
+    <select id="change_status" name="change_status">
+      <option value="false">Available</option>
+      <option value="true">Not available</option>
+    </select>
+    <button type="submit" phx-click={hide_modal('view_property')} class="mt-4 bg-blue-800 hover:bg-blue-700 transition-colors text-white px-4 py-2 rounded-md">Update status</button>
+   </form>
+    <span><a href="client/edit_profile" class="mt-4 bg-blue-800 hover:bg-blue-700 transition-colors text-white px-4 py-2 rounded-md">Edit</a></span>
+   </div>
+<% end %>
+</.modal>

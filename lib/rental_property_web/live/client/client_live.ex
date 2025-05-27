@@ -21,6 +21,10 @@ defmodule RentalPropertyWeb.ClientLive do
       results -> for result <- results do Map.from_struct(result) end
       end
       notification_total = Enum.count(notifications)
+      client_properties = PROPERTIES.find_by_client_id(result.id) 
+      client_properties = for client_property <- client_properties do
+        Map.from_struct(client_property)
+      end
 
       properties = TYPES.list_types() 
       properties_map = for property <- properties do
@@ -32,6 +36,8 @@ defmodule RentalPropertyWeb.ClientLive do
       end
       socket = socket
       |> assign(:tier_id, result.tier_id)
+      |> assign(:client_properties, client_properties)
+      |> assign(:user, result)
       |> assign(:fname, result.fname)
       |> assign(:client_id, result.id)
       |> assign(:lname, result.lname)
@@ -185,6 +191,23 @@ defmodule RentalPropertyWeb.ClientLive do
     socket = socket
     |> assign(:search_map, search)
     |> assign(:search, true)
+    {:noreply, socket}
+  end
+
+  def handle_event("change_status", params, socket) do
+      client_properties = PROPERTIES.find_by_client_id(socket.assigns.user.id) 
+      client_property = Enum.at(client_properties, 0)
+      IO.inspect(client_property, label: "AAAA___--->")
+    PROPERTIES.update_property(client_property, %{occupied: params["change_status"]})
+
+      client_properties = PROPERTIES.find_by_client_id(socket.assigns.user.id) 
+      client_properties_map = for client_property <- client_properties do
+        Map.from_struct(client_property)
+      end
+
+    socket = socket
+    |> assign(:client_properties, client_properties)
+    |> put_flash(:info, "Property successfully updated.")
     {:noreply, socket}
   end
 
