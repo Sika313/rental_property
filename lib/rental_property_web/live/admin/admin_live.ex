@@ -11,13 +11,13 @@ defmodule RentalPropertyWeb.AdminLive do
   alias RentalPropertyWeb.ViewUsersComponent 
   alias RentalPropertyWeb.ViewCategoriesComponent 
   alias RentalPropertyWeb.ViewClientsComponent
+  alias RentalPropertyWeb.ViewPropetiesComponent
 
   def mount(_params, session, socket) do
     notification_types =  NOTIFICATION_TYPES.list_notification_types() 
 
     notification_types = for nt <- notification_types do
-      Map.from_struct(nt)
-    end
+      Map.from_struct(nt) end
     notification_msg = Enum.at(notification_types, 1)
 
     pending_requests = TIER_UPGRADES.get_pending_requests() |> then(
@@ -50,6 +50,7 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:clients_pending_requests, clients_pending_requests)
     |> assign(:client, %{id: "", fname: "", lname: "",gender: "", phone: "" })
     |> assign(:view_clients, false)
+    |> assign(:view_properties, false)
     {:ok, socket}
   end
 
@@ -68,12 +69,12 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:view_categories, false)
     {:noreply, socket}
   end
-
-  def handle_event("view_categories", _params, socket) do
+  def handle_event("close_view_properties", _params, socket) do
     socket = socket
-    |> assign(:view_categories, true)
+    |> assign(:view_properties, false)
     {:noreply, socket}
   end
+
 
   def handle_event("create_user", params, socket) do
     IO.inspect(params, label: "PARAMS--->")
@@ -102,11 +103,34 @@ defmodule RentalPropertyWeb.AdminLive do
   def handle_event("view_users", _params, socket) do
     socket = socket
     |> assign(:view_users, true)
+    |> assign(:view_categories, false)
+    |> assign(:view_clients, false)
+    |> assign(:view_properties, false)
     {:noreply, socket}
   end
   def handle_event("view_clients", _params, socket) do
     socket = socket
+    |> assign(:view_users, false)
+    |> assign(:view_categories, false)
     |> assign(:view_clients, true)
+    |> assign(:view_properties, false)
+    {:noreply, socket}
+  end
+  def handle_event("view_properties", _params, socket) do
+    socket = socket
+    |> assign(:view_users, false)
+    |> assign(:view_categories, false)
+    |> assign(:view_clients, false)
+    |> assign(:view_properties, true)
+
+    {:noreply, socket}
+  end
+  def handle_event("view_categories", _params, socket) do
+    socket = socket
+    |> assign(:view_users, false)
+    |> assign(:view_categories, true)
+    |> assign(:view_clients, false)
+    |> assign(:view_properties, false)
     {:noreply, socket}
   end
 
@@ -163,4 +187,6 @@ defmodule RentalPropertyWeb.AdminLive do
     |> put_flash(:info, "Category successfully added.")
     {:noreply, socket}
   end
+
+  
 end
