@@ -66,8 +66,12 @@ defmodule RentalPropertyWeb.ViewPropetiesComponent do
                   Status 
                 </th>
                  <th scope="col" class="px-6 py-3">
+                  Owner name
                 </th>
-                                 
+                 <th scope="col" class="px-6 py-3">
+                  Owner phone number 
+                </th>
+                                
             </tr>
         </thead>
         <tbody>
@@ -92,6 +96,13 @@ defmodule RentalPropertyWeb.ViewPropetiesComponent do
                     Available
                   <% end %>
                 </th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                 <%= property.client.fname %> <%= property.client.lname %>
+                </th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                 <%= property.client.phone %> 
+                </th>
+
 
              </tr>
           <% end %>
