@@ -31,6 +31,11 @@
 
   <!-- END -->
 
+<%= if @view_dashboard do %>
+<.live_component module={DashboardComponent} id="dashboard" />
+<% end %>
+
+
 <%= if @view_users do %>
 <.live_component module={ViewUsersComponent} id="view_users" />
 <% end %>

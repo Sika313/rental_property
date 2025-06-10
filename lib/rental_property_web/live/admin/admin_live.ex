@@ -9,6 +9,7 @@ defmodule RentalPropertyWeb.AdminLive do
   alias RentalProperty.NOTIFICATIONS
   alias RentalProperty.NOTIFICATION_TYPES
   alias RentalPropertyWeb.ViewUsersComponent 
+  alias RentalPropertyWeb.DashboardComponent 
   alias RentalPropertyWeb.ViewCategoriesComponent 
   alias RentalPropertyWeb.ViewClientsComponent
   alias RentalPropertyWeb.ViewPropetiesComponent
@@ -42,6 +43,7 @@ defmodule RentalPropertyWeb.AdminLive do
     )
     socket = socket
     |> assign(:notification_msg, notification_msg)
+    |> assign(:view_dashboard, true)
     |> assign(:roles, roles)
     |> assign(:tiers, tiers)
     |> assign(:view_users, false)
@@ -57,21 +59,25 @@ defmodule RentalPropertyWeb.AdminLive do
   def handle_event("close_view_users", _params, socket) do
     socket = socket
     |> assign(:view_users, false)
+    |> assign(:view_dashboard, true)
     {:noreply, socket}
   end
   def handle_event("close_view_clients", _params, socket) do
     socket = socket
     |> assign(:view_clients, false)
+    |> assign(:view_dashboard, true)
     {:noreply, socket}
   end
   def handle_event("close_view_categories", _params, socket) do
     socket = socket
     |> assign(:view_categories, false)
+    |> assign(:view_dashboard, true)
     {:noreply, socket}
   end
   def handle_event("close_view_properties", _params, socket) do
     socket = socket
     |> assign(:view_properties, false)
+    |> assign(:view_dashboard, true)
     {:noreply, socket}
   end
 
@@ -106,6 +112,7 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:view_categories, false)
     |> assign(:view_clients, false)
     |> assign(:view_properties, false)
+    |> assign(:view_dashboard, false)
     {:noreply, socket}
   end
   def handle_event("view_clients", _params, socket) do
@@ -114,6 +121,7 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:view_categories, false)
     |> assign(:view_clients, true)
     |> assign(:view_properties, false)
+    |> assign(:view_dashboard, false)
     {:noreply, socket}
   end
   def handle_event("view_properties", _params, socket) do
@@ -122,7 +130,7 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:view_categories, false)
     |> assign(:view_clients, false)
     |> assign(:view_properties, true)
-
+    |> assign(:view_dashboard, false)
     {:noreply, socket}
   end
   def handle_event("view_categories", _params, socket) do
@@ -131,6 +139,7 @@ defmodule RentalPropertyWeb.AdminLive do
     |> assign(:view_categories, true)
     |> assign(:view_clients, false)
     |> assign(:view_properties, false)
+    |> assign(:view_dashboard, false)
     {:noreply, socket}
   end
 

@@ -14,7 +14,6 @@ defmodule RentalProperty.PROPERTIES do
 
   """
   def get_by_map(map) do
-    IO.inspect(map.type_id, label: "MAAAAPPP--->")
     query = from p in Property, where: p.type_id == ^map.type_id and p.province_id == ^map.province_id and p.district_id == ^map.district_id 
     Repo.all(query)
   end
