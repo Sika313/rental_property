@@ -9,7 +9,6 @@ defmodule RentalPropertyWeb.SignupLive do
 
   def handle_event("submit", params, socket) do
     if params["password"] != params["confirm-password"] do
-      IO.inspect("HIT--->")
       socket = socket
       |> put_flash(:error, "Passwords to not match")
       {:noreply, socket}

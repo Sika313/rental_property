@@ -59,17 +59,83 @@
 </.modal>
 
 <.modal id="land">
-  <form>
-    
-  </form>
+   <form phx-submit="pay_house" class="flex flex-col">
+    <label for="house">Land for sale</label>
+    <select id="house" name="house" class="mb-4">
+      <option value="K200" phx-click="house_price">For sale</option>
+    </select>
+
+    <input type="text" value={@house_price} class="bg-gray-300 border-0 mb-4" disabled />
+
+    <label for="payment_method">Payment Method</label>
+    <select id="payment_method" name="payment_method" class="mb-4">
+      <option value="airtel">Airtel</option> 
+      <option value="mtn">MTN</option> 
+      <option value="zamtel">Zamtel</option> 
+    </select>
+
+    <label for="sender_phone">Enter your phone number</label>
+    <input type="text" id="sender_phone" name="sender_phone" class="mb-4" />
+
+    <label for="amount">Amount</label>
+    <input type="text" id="amount" name="amount" class="mb-4" />
+    <p>Ensure all the details are accurate before making the payment</p>
+    <button type="submit" class="bg-blue-700 hover:bg-blue-600 transition-colors px-2 py-4 text-white">Pay</button>
+    </form>
 </.modal>
 
 <.modal id="shop">
-  <h1>Shop</h1>
+   <form phx-submit="pay_house" class="flex flex-col">
+    <label for="house">Shop for rent</label>
+    <select id="house" name="house" class="mb-4">
+      <option value="K100" phx-click="house_price">For rent</option>
+    </select>
+
+    <input type="text" value={@house_price} class="bg-gray-300 border-0 mb-4" disabled />
+
+    <label for="payment_method">Payment Method</label>
+    <select id="payment_method" name="payment_method" class="mb-4">
+      <option value="airtel">Airtel</option> 
+      <option value="mtn">MTN</option> 
+      <option value="zamtel">Zamtel</option> 
+    </select>
+
+    <label for="sender_phone">Enter your phone number</label>
+    <input type="text" id="sender_phone" name="sender_phone" class="mb-4" />
+
+    <label for="amount">Amount</label>
+    <input type="text" id="amount" name="amount" class="mb-4" />
+    <p>Ensure all the details are accurate before making the payment</p>
+    <button type="submit" class="bg-blue-700 hover:bg-blue-600 transition-colors px-2 py-4 text-white">Pay</button>
+    </form>
+
 </.modal>
 
 <.modal id="bh">
-  <h1>Boarding House</h1>
+   <form phx-submit="pay_house" class="flex flex-col">
+    <label for="house">Boarding house</label>
+    <select id="house" name="house" class="mb-4">
+      <option value="K150" phx-click="house_price">For rent</option>
+    </select>
+
+    <input type="text" value={@house_price} class="bg-gray-300 border-0 mb-4" disabled />
+
+    <label for="payment_method">Payment Method</label>
+    <select id="payment_method" name="payment_method" class="mb-4">
+      <option value="airtel">Airtel</option> 
+      <option value="mtn">MTN</option> 
+      <option value="zamtel">Zamtel</option> 
+    </select>
+
+    <label for="sender_phone">Enter your phone number</label>
+    <input type="text" id="sender_phone" name="sender_phone" class="mb-4" />
+
+    <label for="amount">Amount</label>
+    <input type="text" id="amount" name="amount" class="mb-4" />
+    <p>Ensure all the details are accurate before making the payment</p>
+    <button type="submit" class="bg-blue-700 hover:bg-blue-600 transition-colors px-2 py-4 text-white">Pay</button>
+    </form>
+
 </.modal>
 
 </div>
